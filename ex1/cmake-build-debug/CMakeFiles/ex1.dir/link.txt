@@ -1,0 +1,1 @@
+/usr/bin/cc -g   CMakeFiles/ex1.dir/ChangeBase.c.o  -o ex1 
