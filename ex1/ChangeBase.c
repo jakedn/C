@@ -1,38 +1,30 @@
 #include <stdio.h>
-//#include <math.h>
 
-
+const int INVALID_REPRESENTATION = -1;
+/**
+ * power function returns a^b
+ * @param a - first integer
+ * @param b - power integer
+ * @return  - a^b
+ */
 int pow(int a, int b){
     int result = 1;
 
     do{
+        //bitwise and b&1 == true means that b's least significant bit is 1(b is odd number)
         if(b&1){
             result *= a;
             b--;
         }
-        if(b!=0){
-            a *= a;
-            b /= 2;
-        }
+        a *= a;     //now b is even so we can times a by itself and divide b by 2
+        b /= 2;     //because a^b=(a*a)^(b/2) and we dont lose information about b because b is even
+
     }while(b != 0);
     return result;
 }
 
-///**
-// *
-// * @param digit - the wanted digit counting from 0 (the least sinificant digit)
-// * @param number- the number we are takign a digit from.
-// * @return - the required digit
-// */
-//int getDigit(int digit, int number){
-//
-//    number /= pow(10,digit);
-//    number %= 10;
-//    return number;
-//}
-
 /**
- *
+ * changes a number in a given representation to decimal representation.
  * @param base - basis of the number given to this function.
  * @param number -the given number represented in basis basis.
  * @return - the given number in base 10 representation.
@@ -46,7 +38,7 @@ int toDecimal(int base, int number){
     do{
         digit = number % 10;
         if(digit >= base){
-            return -1;  //returning error code -1
+            return INVALID_REPRESENTATION;
         }
         sum += digit*pow(base,counter);
         counter++;
@@ -56,10 +48,10 @@ int toDecimal(int base, int number){
 }
 
 /**
- *
- * @param base
- * @param number
- * @return
+ * changes a number in decimal representation to a given representation.
+ * @param base - the base that we want to be represented
+ * @param number- our given number
+ * @return- the number in base representation.
  */
 int decimalToBase(int base, int number){
 
@@ -78,6 +70,12 @@ int decimalToBase(int base, int number){
 int main() {
     int fromBase,toBase,number;
     scanf("%d %d %d", &fromBase, &toBase, &number );
-    printf("%d", decimalToBase(toBase,toDecimal(fromBase,number)));
+    int result = decimalToBase(toBase,toDecimal(fromBase,number));
+    if(result == INVALID_REPRESENTATION){
+        printf("");
+    }
+    else{
+        printf("%d", result);
+    }
     return 0;
 }
