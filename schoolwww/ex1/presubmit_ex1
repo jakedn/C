@@ -1,0 +1,99 @@
+#! /usr/bin/python
+import os
+import sys
+sys.path.insert(0, '/cs/course/2017/labc/www/')
+import psUtils
+
+import os, shutil
+import subprocess
+
+#Set autoflash
+sys.stdout = os.fdopen(sys.stdout.fileno(), 'w', 0)
+
+courseBaseDir = "/cs/course/2017/labc"
+
+# Exercise name
+exName = "ex1"
+
+#Here we define good and bad files.
+required = ["ChangeBase.c", "FindString.c"]
+forbidden =["README"]
+goodPatterns = ["ChangeBase.c", "FindString.c", "[Mm]akefile"]
+
+badPatterns = ["*.class", "*.o", "*.pyc", "*.pdf","README"]
+
+
+secsToRun = 3
+
+##################################################################
+#
+#  print the usage message.
+#
+##################################################################
+
+# the script name:
+scriptName = os.path.split(sys.argv[0])[1]
+
+def usage():
+    print scriptName + " <tar_file>"
+    print "Will test the given tar file as a candidate submission for the exercise."
+    print "Example:\n\t" + scriptName + " ex.tar"
+
+    print """Note: passing this test script does not guaruntee a high grade.
+These are only very basic tests to avoid some common mistakes.
+If an error is found, correct it and run the script on the corrected file to make sure it is ok.
+"""
+
+#################################################################
+#    Do the work...
+#################################################################
+
+# check that a file was supplied.
+if len(sys.argv)!=2:
+    usage()
+    sys.exit(1)
+
+print "Running..."
+#argv[1] is the name of the candidate submission file. e.g. "ex3.tar"
+tarFile = os.path.abspath(sys.argv[1])
+
+tempDir = psUtils.createTempDir("labc_Temp_"+exName+"_")
+os.chdir(tempDir)
+
+# Open tar file
+if psUtils.extractTar(tarFile):
+    sys.exit(1);
+    
+print "Tar extracted O.K."
+   
+#make sure the files are as they should be.
+if psUtils.checkFiles(tempDir, required, forbidden, goodPatterns, badPatterns):
+    sys.exit(1)
+
+# Make sure there are no empty files submitted
+# (we do this since these can be compiled without error)
+if psUtils.emptyFiles(tempDir):
+    sys.exit(1)
+
+
+#ex1_files = os.path.abspath("/cs/course/2015/labc/www/ex1/ex1_files.tar")
+#if psUtils.extractTar(ex1_files):
+#    sys.exit(1)
+
+print "Compilation check..."
+
+#Compile the program
+compileCmd = "gcc -Wextra -Wall -Wvla -std=c99 ChangeBase.c -o ChangeBase -lm"
+compileResult = psUtils.compile(compileCmd)
+if compileResult:
+    sys.exit(compileResult)
+    
+compileCmd = "gcc -Wextra -Wall -Wvla -std=c99 FindString.c -o FindString"
+compileResult = psUtils.compile(compileCmd)
+if compileResult:
+    sys.exit(compileResult)
+
+print "Compilation seems OK! Check if you got warnings!"
+
+
+sys.exit(0)
