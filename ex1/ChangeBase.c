@@ -1,6 +1,28 @@
+/*File:ChangeBase ,Author:jakedn
+ *
+ * the algorithm that is used here is we convert the number
+ * we get as input from the input base to decimal and then from
+ * decimal to the desired base representation. the conversion to decimal
+ * is done by taking each digit and multyplying it by 10^d where d is
+ * the digits place in the orginal number(starting from 0), this is done in toDecimal
+ * then we divide the decimal number by the desired base and make the remainder the next digit
+ * in our new representation, this is done in decimalToBase.
+ * pow takes O(log(b)) time
+ * toDecimal takes O(log10(number)*log(log10(number))) which is bounded by O(log(number)^2)
+ * thats because it does O(log10(number) iterations and each iteration takes
+ * O(log(counter)) and counter <= log10(number) at all times
+ * decimalToBase takes  O(logb(number)*log(logb(number))) where b is the base input,
+ * the explanation for this is like in toDecimal and this is bounded by O(log(number)^2)
+ * in total we see that our algorithm works in polynomial time according to the amount of digits
+ * (log(number) is bounded by C*log10(number) and is like the amount of digits)
+ */
+
+
 #include <stdio.h>
 
+#define INVALID_ERROR_MESSAGE "invalid!!"
 const int INVALID_REPRESENTATION = -1;
+
 /**
  * power function returns a^b
  * @param a - first integer
@@ -31,7 +53,6 @@ int pow(int a, int b){
  */
 int toDecimal(int base, int number){
 
-    printf("%d\n", number);
     int sum = 0;
     int counter = 0;
     int digit;
@@ -69,13 +90,15 @@ int decimalToBase(int base, int number){
 
 int main() {
     int fromBase,toBase,number;
+    //here we can use scanf due to the "promise" of "good" input in the testers
     scanf("%d %d %d", &fromBase, &toBase, &number );
     int result = decimalToBase(toBase,toDecimal(fromBase,number));
     if(result == INVALID_REPRESENTATION){
-        printf("");
+        printf("%s\n",INVALID_ERROR_MESSAGE);
+        return INVALID_REPRESENTATION;
     }
     else{
-        printf("%d", result);
+        printf("%d\n", result);
     }
     return 0;
 }
