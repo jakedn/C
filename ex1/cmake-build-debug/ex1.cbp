@@ -84,7 +84,7 @@
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="/cs/usr/jakedn/Desktop/C/ex1/ChangeBase.c">
+		<Unit filename="/cs/usr/jakedn/Desktop/C/ex1/FindString.c">
 			<Option target="ex1"/>
 		</Unit>
 		<Unit filename="/cs/usr/jakedn/Desktop/C/ex1/CMakeLists.txt">

@@ -1,4 +1,5 @@
-/*File:ChangeBase ,Author:jakedn
+/*File:ChangeBase
+ *Author:jakedn
  *
  * the algorithm that is used here is we convert the number
  * we get as input from the input base to decimal and then from
@@ -21,7 +22,7 @@
 #include <stdio.h>
 
 #define INVALID_ERROR_MESSAGE "invalid!!"
-const int INVALID_REPRESENTATION = -1;
+#define INVALID_REPRESENTATION -1
 
 /**
  * power function returns a^b

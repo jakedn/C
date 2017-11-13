@@ -123,32 +123,32 @@ ex1/fast:
 	$(MAKE) -f CMakeFiles/ex1.dir/build.make CMakeFiles/ex1.dir/build
 .PHONY : ex1/fast
 
-ChangeBase.o: ChangeBase.c.o
+FindString.o: FindString.c.o
 
-.PHONY : ChangeBase.o
+.PHONY : FindString.o
 
 # target to build an object file
-ChangeBase.c.o:
-	$(MAKE) -f CMakeFiles/ex1.dir/build.make CMakeFiles/ex1.dir/ChangeBase.c.o
-.PHONY : ChangeBase.c.o
+FindString.c.o:
+	$(MAKE) -f CMakeFiles/ex1.dir/build.make CMakeFiles/ex1.dir/FindString.c.o
+.PHONY : FindString.c.o
 
-ChangeBase.i: ChangeBase.c.i
+FindString.i: FindString.c.i
 
-.PHONY : ChangeBase.i
+.PHONY : FindString.i
 
 # target to preprocess a source file
-ChangeBase.c.i:
-	$(MAKE) -f CMakeFiles/ex1.dir/build.make CMakeFiles/ex1.dir/ChangeBase.c.i
-.PHONY : ChangeBase.c.i
+FindString.c.i:
+	$(MAKE) -f CMakeFiles/ex1.dir/build.make CMakeFiles/ex1.dir/FindString.c.i
+.PHONY : FindString.c.i
 
-ChangeBase.s: ChangeBase.c.s
+FindString.s: FindString.c.s
 
-.PHONY : ChangeBase.s
+.PHONY : FindString.s
 
 # target to generate assembly for a file
-ChangeBase.c.s:
-	$(MAKE) -f CMakeFiles/ex1.dir/build.make CMakeFiles/ex1.dir/ChangeBase.c.s
-.PHONY : ChangeBase.c.s
+FindString.c.s:
+	$(MAKE) -f CMakeFiles/ex1.dir/build.make CMakeFiles/ex1.dir/FindString.c.s
+.PHONY : FindString.c.s
 
 # Help Target
 help:
@@ -159,9 +159,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... ex1"
-	@echo "... ChangeBase.o"
-	@echo "... ChangeBase.i"
-	@echo "... ChangeBase.s"
+	@echo "... FindString.o"
+	@echo "... FindString.i"
+	@echo "... FindString.s"
 .PHONY : help
 
 

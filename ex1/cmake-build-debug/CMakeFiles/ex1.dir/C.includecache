@@ -6,7 +6,9 @@
 
 #IncludeRegexTransform: 
 
-/cs/usr/jakedn/Desktop/C/ex1/ChangeBase.c
+/cs/usr/jakedn/Desktop/C/ex1/FindString.c
 stdio.h
+-
+string.h
 -
 

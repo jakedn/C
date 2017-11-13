@@ -57,38 +57,38 @@ include CMakeFiles/ex1.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/ex1.dir/flags.make
 
-CMakeFiles/ex1.dir/ChangeBase.c.o: CMakeFiles/ex1.dir/flags.make
-CMakeFiles/ex1.dir/ChangeBase.c.o: ../ChangeBase.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/cs/usr/jakedn/Desktop/C/ex1/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/ex1.dir/ChangeBase.c.o"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/ex1.dir/ChangeBase.c.o   -c /cs/usr/jakedn/Desktop/C/ex1/ChangeBase.c
+CMakeFiles/ex1.dir/FindString.c.o: CMakeFiles/ex1.dir/flags.make
+CMakeFiles/ex1.dir/FindString.c.o: ../FindString.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/cs/usr/jakedn/Desktop/C/ex1/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/ex1.dir/FindString.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/ex1.dir/FindString.c.o   -c /cs/usr/jakedn/Desktop/C/ex1/FindString.c
 
-CMakeFiles/ex1.dir/ChangeBase.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/ex1.dir/ChangeBase.c.i"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /cs/usr/jakedn/Desktop/C/ex1/ChangeBase.c > CMakeFiles/ex1.dir/ChangeBase.c.i
+CMakeFiles/ex1.dir/FindString.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/ex1.dir/FindString.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /cs/usr/jakedn/Desktop/C/ex1/FindString.c > CMakeFiles/ex1.dir/FindString.c.i
 
-CMakeFiles/ex1.dir/ChangeBase.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/ex1.dir/ChangeBase.c.s"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /cs/usr/jakedn/Desktop/C/ex1/ChangeBase.c -o CMakeFiles/ex1.dir/ChangeBase.c.s
+CMakeFiles/ex1.dir/FindString.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/ex1.dir/FindString.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /cs/usr/jakedn/Desktop/C/ex1/FindString.c -o CMakeFiles/ex1.dir/FindString.c.s
 
-CMakeFiles/ex1.dir/ChangeBase.c.o.requires:
+CMakeFiles/ex1.dir/FindString.c.o.requires:
 
-.PHONY : CMakeFiles/ex1.dir/ChangeBase.c.o.requires
+.PHONY : CMakeFiles/ex1.dir/FindString.c.o.requires
 
-CMakeFiles/ex1.dir/ChangeBase.c.o.provides: CMakeFiles/ex1.dir/ChangeBase.c.o.requires
-	$(MAKE) -f CMakeFiles/ex1.dir/build.make CMakeFiles/ex1.dir/ChangeBase.c.o.provides.build
-.PHONY : CMakeFiles/ex1.dir/ChangeBase.c.o.provides
+CMakeFiles/ex1.dir/FindString.c.o.provides: CMakeFiles/ex1.dir/FindString.c.o.requires
+	$(MAKE) -f CMakeFiles/ex1.dir/build.make CMakeFiles/ex1.dir/FindString.c.o.provides.build
+.PHONY : CMakeFiles/ex1.dir/FindString.c.o.provides
 
-CMakeFiles/ex1.dir/ChangeBase.c.o.provides.build: CMakeFiles/ex1.dir/ChangeBase.c.o
+CMakeFiles/ex1.dir/FindString.c.o.provides.build: CMakeFiles/ex1.dir/FindString.c.o
 
 
 # Object files for target ex1
 ex1_OBJECTS = \
-"CMakeFiles/ex1.dir/ChangeBase.c.o"
+"CMakeFiles/ex1.dir/FindString.c.o"
 
 # External object files for target ex1
 ex1_EXTERNAL_OBJECTS =
 
-ex1: CMakeFiles/ex1.dir/ChangeBase.c.o
+ex1: CMakeFiles/ex1.dir/FindString.c.o
 ex1: CMakeFiles/ex1.dir/build.make
 ex1: CMakeFiles/ex1.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/cs/usr/jakedn/Desktop/C/ex1/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking C executable ex1"
@@ -99,7 +99,7 @@ CMakeFiles/ex1.dir/build: ex1
 
 .PHONY : CMakeFiles/ex1.dir/build
 
-CMakeFiles/ex1.dir/requires: CMakeFiles/ex1.dir/ChangeBase.c.o.requires
+CMakeFiles/ex1.dir/requires: CMakeFiles/ex1.dir/FindString.c.o.requires
 
 .PHONY : CMakeFiles/ex1.dir/requires
 

@@ -3,5 +3,5 @@ project(ex1)
 
 set(CMAKE_C_STANDARD 99)
 
-set(SOURCE_FILES ChangeBase.c)
+set(SOURCE_FILES FindString.c)
 add_executable(ex1 ${SOURCE_FILES})

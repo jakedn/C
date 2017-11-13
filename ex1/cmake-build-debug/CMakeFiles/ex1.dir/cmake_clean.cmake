@@ -1,5 +1,5 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/ex1.dir/ChangeBase.c.o"
+  "CMakeFiles/ex1.dir/FindString.c.o"
   "ex1.pdb"
   "ex1"
 )
