@@ -6,9 +6,9 @@
 
 #IncludeRegexTransform: 
 
-/cs/usr/jakedn/Desktop/C/ex1/FindString.c
+/cygdrive/c/Users/yaako_000/Desktop/C/ex1/FindString.c
 stdio.h
 -
-string.h
+ctype.h
 -
 

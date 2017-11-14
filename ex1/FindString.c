@@ -1,27 +1,56 @@
 /*File:FindString
  *Author:jakedn
+ *
+ *TODO
  */
-#define LEN 5
+#include <stdio.h>
+#include <ctype.h>
+#define ARGUMENT_ERROR_MSG "not enough arguments!"
+#define HIT_END 2
+#define HIT_END_NULL -1
 #define TRUE 1
 #define FALSE 0
 #define MAX_SIZE 256
-#include <stdio.h>
-#include <string.h>
-
-char *get_input() {
-    char *result;
-    char r[LEN];
-    result = r;
-    int c = 0;
-    while (c<LEN-1){
-
-        printf("here\n");
-        scanf("%c",(result+c++));
-        printf("%c\n",result[c-1]);
+//TODO document code
+/**
+ *
+ * @param str - pointer to string we put the input into
+ * @return - 1 if we succeeded 0 if there was an error and 2 if we hit EOF
+ *              and -1 if we didnt read anything before we hit the end.
+ */
+int get_input(char *const str) {
+    char next=' ',arrnext[2];
+    while(next == ' ') {
+        if (fgets(arrnext, 2, stdin) == NULL) { return HIT_END_NULL; }
+        next = *arrnext;
     }
-    result[c] = '\0';
-    return result;
+    if(next == '\n' || next == EOF){return HIT_END_NULL;}
+    int c = 0;
+    while (c<MAX_SIZE){
+        //the next to lines replace getchar() because i dont have to cast the result
+        //from int to char
+        if(c != 0)
+        {
+            if(fgets(arrnext,2,stdin) == NULL){return HIT_END;}
+            next = *arrnext;
+        }
+        if( next == '\n')
+        {
+            str[c] = '\0';
+            return HIT_END;
+        }
+        if(next == ' ') { break; }
+        if(!isprint(next))
+        {
+            fprintf(stderr,"Invalid input");
+            return FALSE;
+        }
+        str[c++] = next;
+    }
+    str[c] = '\0';
+    return TRUE;
 }
+
 
 /**
  * this function checks to see if word is in the line line
@@ -46,10 +75,45 @@ int isWordFound(const char * const word,const char *line){
     return FALSE;
 }
 
-void printLine(const char *filepath, const char *line,int onlyFile)
+/**
+ *
+ * @param line
+ * @return
+ */
+char *updateLine(char *const line)
 {
-    if(onlyFile){printf("%s\n",line);}
-    else{printf("%s:%s\n",filepath,line);}
+    int c=0;
+    while(line[c] != '\0')
+    {
+        if(line[c] == '\n')
+        {
+            line[c] = '\0';
+            break;
+        }
+        c++;
+    }
+    return line;
+}
+
+/**
+ *
+ * @param file_path
+ * @param line
+ * @param onlyFile
+ */
+void printLine(const char *file_path,char *const line,int onlyFile)
+{
+    if(onlyFile){printf("%s\n",updateLine(line));}
+    else{printf("%s:%s\n",file_path,updateLine(line));}
+}
+
+/**
+ *
+ * @param file_path
+ */
+void printError(const char *file_path)
+{
+    fprintf(stderr,"grep: %s: No such file or directory\n",file_path);
 }
 
 int main(){
@@ -58,5 +122,46 @@ int main(){
 //    line=a;
 //    word=b;
 //    printf("%s in line %s :%d",word,line,isWordFound(word,line));
-    printf("input : %s\ninput:%s",get_input(),get_input());
+    int oneFile = FALSE;
+    char file_path[MAX_SIZE+1],word[MAX_SIZE+1],line[MAX_SIZE+1];
+    int get = get_input(word);
+    if(get == HIT_END || get == HIT_END_NULL)
+    {
+        fprintf(stderr,ARGUMENT_ERROR_MSG);
+        return 1;
+    }
+    get = get_input(file_path);
+    if(get == HIT_END_NULL)
+    {
+        fprintf(stderr,ARGUMENT_ERROR_MSG);
+        return 1;
+    }
+    if(get == HIT_END) {oneFile = TRUE;}
+    FILE *f;
+    int first = 1;
+    do
+    {
+        if(!first)
+        {
+            get = get_input(file_path);
+            if (get == HIT_END_NULL) { break; }
+        }
+        else{first = 0;}
+        f = fopen(file_path, "r");
+        if(f == NULL){printError(file_path);}
+        else
+        {
+            while (fgets(line, MAX_SIZE + 1, f) != NULL)
+            {
+                if (isWordFound(word, line)) { printLine(file_path, line, oneFile); }
+            }
+            if (fclose(f) == EOF) { return 1; }//TODO error message
+        }
+    }while(get != HIT_END && get != HIT_END_NULL);
+
+    return 0;
+    get_input(file_path);
+    printf("input : %s\n",file_path);
+    get_input(file_path);
+    printf("input : %s\n",file_path);
 }

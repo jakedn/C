@@ -4,7 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_C
-  "/cs/usr/jakedn/Desktop/C/ex1/FindString.c" "/cs/usr/jakedn/Desktop/C/ex1/cmake-build-debug/CMakeFiles/ex1.dir/FindString.c.o"
+  "/cygdrive/c/Users/yaako_000/Desktop/C/ex1/FindString.c" "/cygdrive/c/Users/yaako_000/Desktop/C/ex1/cmake-build-debug/CMakeFiles/ex1.dir/FindString.c.o"
   )
 set(CMAKE_C_COMPILER_ID "GNU")
 

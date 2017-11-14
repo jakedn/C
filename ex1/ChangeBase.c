@@ -95,7 +95,7 @@ int main() {
     scanf("%d %d %d", &fromBase, &toBase, &number );
     int result = decimalToBase(toBase,toDecimal(fromBase,number));
     if(result == INVALID_REPRESENTATION){
-        printf("%s\n",INVALID_ERROR_MESSAGE);
+        fprintf(stderr,"%s\n",INVALID_ERROR_MESSAGE);
         return INVALID_REPRESENTATION;
     }
     else{
