@@ -1,7 +1,8 @@
 /*File:FindString
  *Author:jakedn
- *
- *TODO
+ *this file contains code for a program "FindString" that mimics a unix "grep" command in a simpler way
+ * simpler meaning doesnt comprehend regex and other features grep has.
+ * this program is made as "grep -i" meaning it CAN search substrings and is not case sensitive.
  */
 #include <stdio.h>
 #include <ctype.h>
@@ -178,6 +179,8 @@ int main(){
             if (got_input == HIT_END_NULL) { break; }
         }
         else{first = 0;}
+
+
         f = fopen(file_path, "r");
         if(f == NULL){printError(file_path);}
         else
