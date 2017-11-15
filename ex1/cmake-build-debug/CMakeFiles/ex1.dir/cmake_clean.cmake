@@ -1,8 +1,7 @@
 file(REMOVE_RECURSE
   "CMakeFiles/ex1.dir/FindString.c.o"
   "ex1.pdb"
-  "ex1.exe"
-  "libex1.dll.a"
+  "ex1"
 )
 
 # Per-language clean rules from dependency scanning.

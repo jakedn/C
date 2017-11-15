@@ -1,5 +1,5 @@
-for f in input_output_files/ChangeBase*.in
+for f in input_output_files/FindString*.in
 do 
 	echo "prossesing $f file..."
-	changebase < $f > $f.out
+	findstring < $f
 done

@@ -6,7 +6,7 @@
 
 #IncludeRegexTransform: 
 
-/cygdrive/c/Users/yaako_000/Desktop/C/ex1/FindString.c
+/cs/usr/jakedn/Desktop/C/ex1/FindString.c
 stdio.h
 -
 ctype.h

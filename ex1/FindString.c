@@ -21,11 +21,18 @@
  */
 int get_input(char *const str) {
     char next=' ',arrnext[2];
+
+    //this next part of code takes out redundant ' ' chars that are in the input.
     while(next == ' ') {
         if (fgets(arrnext, 2, stdin) == NULL) { return HIT_END_NULL; }
         next = *arrnext;
     }
+
+    //if we hit the end of the input before we got anything of sustenance we return a special value to indicate that.
     if(next == '\n' || next == EOF){return HIT_END_NULL;}
+
+    //this next part checks to see if every char is printable and appends it to str.
+    //the loop will stop if it hits an error, gets to EOF or reads the maximal char length.
     int c = 0;
     while (c<MAX_SIZE){
         //the next to lines replace getchar() because i dont have to cast the result
@@ -52,7 +59,20 @@ int get_input(char *const str) {
     return TRUE;
 }
 
-
+/**
+ * this function checks to see if two chars are the same (case insensitive)
+ * @param a first char
+ * @param b the second char
+ * @return 1 if its the same char (case insensitive) otherwise 0.
+ */
+int isEqual(char a, char b)
+{
+    //tolower changes a char to lowercase or leaves it unchanged so either way
+    //tolower(a) will only equal tolower(b) if a and b are the same letter
+    if (isalpha(a)) { return tolower(a)==tolower(b); }
+        //if a isnt a letter then we just check if they are the same char
+    else {return a == b;}
+}
 /**
  * this function checks to see if word is in the line line
  * @param word the word to search for
@@ -66,9 +86,16 @@ int isWordFound(const char * const word,const char *line){
         c=0;
         while(word[c] != '\0')
         {
-            if(line[c] == '\0'){return FALSE;}
-            if(word[c] == line[c]) { c++; }
-            else{break;}
+            if(line[c] == '\0'){
+                //we reached end of the line before completing the word
+                return FALSE;
+            }
+            if(isEqual(word[c],line[c])) { c++; }
+            else
+            {
+                //here we got to a place that line and word are different so word isnt in this part of line
+                break;
+            }
         }
         if(word[c] == '\0') { return TRUE; }
         line++;
@@ -121,28 +148,34 @@ void printError(const char *file_path)
 int main(){
 
     int oneFile = FALSE;
+
+    //max_size+1 so we can add '\0' to the end of our string
     char file_path[MAX_SIZE+1],word[MAX_SIZE+1],line[MAX_SIZE+1];
-    int get = get_input(word);
-    if(get == HIT_END || get == HIT_END_NULL)
+    int got_input = get_input(word);
+
+    if(got_input == HIT_END || got_input == HIT_END_NULL)
     {
+        //if we get to EOF here we didnt get a file for input so we send a proper error message
         fprintf(stderr,ARGUMENT_ERROR_MSG);
         return 1;
     }
-    get = get_input(file_path);
-    if(get == HIT_END_NULL)
+    got_input = get_input(file_path);
+    if(got_input == HIT_END_NULL)
     {
+        //also here we didnt get a file for input so we send a proper error message
         fprintf(stderr,ARGUMENT_ERROR_MSG);
         return 1;
     }
-    if(get == HIT_END) {oneFile = TRUE;}
+    if(got_input == HIT_END) {oneFile = TRUE;}
     FILE *f;
     int first = 1;
     do
     {
+        //we have to keep track if its our first iteration otherwise we lose a char
         if(!first)
         {
-            get = get_input(file_path);
-            if (get == HIT_END_NULL) { break; }
+            got_input = get_input(file_path);
+            if (got_input == HIT_END_NULL) { break; }
         }
         else{first = 0;}
         f = fopen(file_path, "r");
@@ -153,9 +186,13 @@ int main(){
             {
                 if (isWordFound(word, line)) { printLine(file_path, line, oneFile); }
             }
-            if (fclose(f) == EOF) { return 1; }//TODO error message
+            if (fclose(f) == EOF)
+            {
+                fprintf(stderr,"Couldnt close file: %s",file_path);
+                return 1;
+            }
         }
-    }while(get != HIT_END && get != HIT_END_NULL);
+    }while(got_input != HIT_END && got_input != HIT_END_NULL);
 
     return 0;
 }
