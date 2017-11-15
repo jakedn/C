@@ -5,15 +5,16 @@
  */
 #include <stdio.h>
 #include <ctype.h>
-#define ARGUMENT_ERROR_MSG "not enough arguments!"
+#define ARGUMENT_ERROR_MSG "not enough arguments!\n"
 #define HIT_END 2
-#define HIT_END_NULL -1
+#define HIT_END_NULL (-1)
 #define TRUE 1
 #define FALSE 0
 #define MAX_SIZE 256
-//TODO document code
+
 /**
- *
+ * this method takes in str and makes its contents the next input that is string
+ * until it reaches a ' ' or '\n' or EOF not including them in str.
  * @param str - pointer to string we put the input into
  * @return - 1 if we succeeded 0 if there was an error and 2 if we hit EOF
  *              and -1 if we didnt read anything before we hit the end.
@@ -42,7 +43,7 @@ int get_input(char *const str) {
         if(next == ' ') { break; }
         if(!isprint(next))
         {
-            fprintf(stderr,"Invalid input");
+            fprintf(stderr,"Invalid input\n");
             return FALSE;
         }
         str[c++] = next;
@@ -76,9 +77,10 @@ int isWordFound(const char * const word,const char *line){
 }
 
 /**
- *
- * @param line
- * @return
+ * this method takes in a string that represents a line in a file and takes
+ * out the \n char and replaces it with a \0 char.
+ * @param line - the string we want to update
+ * @return - a pointer pointing to line.
  */
 char *updateLine(char *const line)
 {
@@ -96,10 +98,10 @@ char *updateLine(char *const line)
 }
 
 /**
- *
- * @param file_path
- * @param line
- * @param onlyFile
+ * this method prints otu a line from the file in file_path
+ * @param file_path - a string that contains the files directory
+ * @param line - a sting containing the contents of a line
+ * @param onlyFile - 1 if the file is the only input file 0 otherwise
  */
 void printLine(const char *file_path,char *const line,int onlyFile)
 {
@@ -108,8 +110,8 @@ void printLine(const char *file_path,char *const line,int onlyFile)
 }
 
 /**
- *
- * @param file_path
+ * this method prints out the file non existing error
+ * @param file_path - the files directory.
  */
 void printError(const char *file_path)
 {
@@ -118,10 +120,6 @@ void printError(const char *file_path)
 
 int main(){
 
-//    char *line,*word,a[256],b[256];
-//    line=a;
-//    word=b;
-//    printf("%s in line %s :%d",word,line,isWordFound(word,line));
     int oneFile = FALSE;
     char file_path[MAX_SIZE+1],word[MAX_SIZE+1],line[MAX_SIZE+1];
     int get = get_input(word);
@@ -160,8 +158,4 @@ int main(){
     }while(get != HIT_END && get != HIT_END_NULL);
 
     return 0;
-    get_input(file_path);
-    printf("input : %s\n",file_path);
-    get_input(file_path);
-    printf("input : %s\n",file_path);
 }
