@@ -30,12 +30,15 @@
  * @param b - power integer
  * @return  - a^b
  */
-int pow(int a, int b){
+int power(int a, int b)
+{
     int result = 1;
 
-    do{
+    do
+    {
         //bitwise and b&1 == true means that b's least significant bit is 1(b is odd number)
-        if(b&1){
+        if(b & 1)
+        {
             result *= a;
             b--;
         }
@@ -52,17 +55,20 @@ int pow(int a, int b){
  * @param number -the given number represented in basis basis.
  * @return - the given number in base 10 representation.
  */
-int toDecimal(int base, int number){
+int toDecimal(int base, int number)
+{
 
     int sum = 0;
     int counter = 0;
     int digit;
-    do{
+    do
+    {
         digit = number % 10;
-        if(digit >= base){
+        if(digit >= base)
+        {
             return INVALID_REPRESENTATION;
         }
-        sum += digit*pow(base,counter);
+        sum += digit * power(base, counter);
         counter++;
         number /= 10;
     }while(number != 0);
@@ -75,30 +81,34 @@ int toDecimal(int base, int number){
  * @param number- our given number
  * @return- the number in base representation.
  */
-int decimalToBase(int base, int number){
-
+int decimalToBase(int base, int number)
+{
     int numberInBase = 0;
     int remainder;
     int counter = 0;
-    do{
+    do
+    {
         remainder = number % base;
         number /= base;
-        numberInBase += remainder * pow(10,counter);
+        numberInBase += remainder * power(10, counter);
         counter++;
-    }while(number!=0);
+    }while(number != 0);
     return numberInBase;
 }
 
-int main() {
-    int fromBase,toBase,number;
+int main()
+{
+    int fromBase, toBase, number;
     //here we can use scanf due to the "promise" of "good" input in the testers
-    scanf("%d %d %d", &fromBase, &toBase, &number );
-    int result = decimalToBase(toBase,toDecimal(fromBase,number));
-    if(result == INVALID_REPRESENTATION){
-        fprintf(stderr,"%s\n",INVALID_ERROR_MESSAGE);
+    scanf("%d %d %d", &fromBase, &toBase, &number);
+    int result = decimalToBase(toBase, toDecimal(fromBase, number));
+    if(result == INVALID_REPRESENTATION)
+    {
+        fprintf(stderr, "%s\n", INVALID_ERROR_MESSAGE);
         return INVALID_REPRESENTATION;
     }
-    else{
+    else
+    {
         printf("%d\n", result);
     }
     return 0;
