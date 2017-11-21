@@ -152,6 +152,18 @@ def jumpdigs(jump):
         return '111'
     return '000'
 
+def binopcmd(op, left, right):
+    if op.value == '&':
+        return []
+    if op.value == '|':
+        return []
+    if op.value == '+':
+        return []
+    if op.value == '-':
+        return []
+    if op.value == '*':
+        return []
+
 
 def assembleLine(line):
     global variablecounter, places, variables
