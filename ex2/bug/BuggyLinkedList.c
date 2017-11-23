@@ -7,9 +7,8 @@ struct node
 {
     int data;
     nodeStruct *next;
-};
+}*head;
 
-nodeStruct *head;   //head wasnt defined properly
 int sizeOfNodes;
 
 /**
