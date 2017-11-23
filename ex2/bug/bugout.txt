@@ -1,0 +1,7 @@
+number of nodes: 8
+0 --> 1 --> 1 --> 1 --> 2 --> 2 --> 2 --> 3 --> NULL
+number of nodes: 6
+0 --> 1 --> 1 --> 2 --> 2 --> 3 --> NULL
+number of nodes: 3
+0 --> 1 --> 1 --> NULL
+number of nodes: 0
