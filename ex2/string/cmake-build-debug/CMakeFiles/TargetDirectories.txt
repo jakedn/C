@@ -1,3 +1,3 @@
-/cygdrive/c/Users/yaako_000/CLionProjects/untitled3/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/cygdrive/c/Users/yaako_000/CLionProjects/untitled3/cmake-build-debug/CMakeFiles/edit_cache.dir
-/cygdrive/c/Users/yaako_000/CLionProjects/untitled3/cmake-build-debug/CMakeFiles/untitled3.dir
+/cs/usr/jakedn/Desktop/C/ex2/string/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/cs/usr/jakedn/Desktop/C/ex2/string/cmake-build-debug/CMakeFiles/edit_cache.dir
+/cs/usr/jakedn/Desktop/C/ex2/string/cmake-build-debug/CMakeFiles/untitled3.dir

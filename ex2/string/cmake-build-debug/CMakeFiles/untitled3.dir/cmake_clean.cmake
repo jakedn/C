@@ -1,8 +1,8 @@
 file(REMOVE_RECURSE
   "CMakeFiles/untitled3.dir/MyString.c.o"
+  "CMakeFiles/untitled3.dir/test.c.o"
   "untitled3.pdb"
-  "untitled3.exe"
-  "libuntitled3.dll.a"
+  "untitled3"
 )
 
 # Per-language clean rules from dependency scanning.

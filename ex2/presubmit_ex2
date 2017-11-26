@@ -1,0 +1,113 @@
+#! /usr/bin/python
+import os
+import sys
+sys.path.insert(0, '/cs/course/2017/labc/www/')
+import psUtils
+
+import os, shutil
+import subprocess
+
+#Set autoflash
+sys.stdout = os.fdopen(sys.stdout.fileno(), 'w', 0)
+
+courseBaseDir = "/cs/course/2017/labc"
+
+# Exercise name
+exName = "ex2"
+
+#Here we define good and bad files.
+required = ["Makefile", "BuggyLinkedList.c", "MyString.c"]
+forbidden = [ ]
+goodPatterns = ["[Mm]akefile", "BuggyLinkedList.c", "MyString.c", "MyString.h"]  # Last supplied files (the imported tar is deleted)
+badPatterns = ["*.class", "*.o", "*.pyc"]
+
+# Dictionary of make command to test for, and their expected output files
+# Values in tuples - 'c' denotes creation, 'd' denotes files that shouldn't exist (for clean commands)
+# 'r' denotes a command run (only check return value)
+make_cmds = { "": ('c', ["MyString.a"]),
+              "BuggyLinkedList	": ('c', ["BuggyLinkedList"]),
+              "": ('r', [])}
+
+secsToRun = 3
+
+##################################################################
+#
+#  print the usage message.
+#
+##################################################################
+
+# the script name:
+scriptName = os.path.split(sys.argv[0])[1]
+
+def usage():
+    print scriptName + " <tar_file>"
+    print "Will test the given tar file as a candidate submission for the exercise."
+    print "Example:\n\t" + scriptName + " ex.tar"
+
+    print """Note: passing this test script does not guaruntee a high grade.
+These are only very basic tests to avoid some common mistakes.
+If an error is found, correct it and run the script on the corrected file to make sure it is ok.
+"""
+
+#################################################################
+#    Do the work...
+#################################################################
+
+# check that a file was supplied.
+if len(sys.argv)!=2:
+    usage()
+    sys.exit(1)
+
+print "Running..."
+#argv[1] is the name of the candidate submission file. e.g. "ex3.tar"
+tarFile = os.path.abspath(sys.argv[1])
+
+tempDir = psUtils.createTempDir("labc_Temp_"+exName+"_")
+os.chdir(tempDir)
+
+# Import required files for compilation
+ex2_files = "/cs/course/2017/labc/www/ex2/ex2_files.tar"
+shutil.copy2(ex2_files, tempDir)
+compileCmd = "tar -xf ex2_files.tar"
+psUtils.compile(compileCmd)
+os.remove("ex2_files.tar")
+
+# Open tar file
+if psUtils.extractTar(tarFile):
+	sys.exit(1)
+print "Tar extracted O.K."
+  
+#make sure the files are as they should be.
+if psUtils.checkFiles(tempDir, required, forbidden, goodPatterns, badPatterns):
+    sys.exit(1)
+
+# Make sure there are no empty files submitted
+# (we do this since these can be compiled without error)
+if psUtils.emptyFiles(tempDir):
+    sys.exit(1)
+
+print "\nCompilation check..."
+for makecmd, fileList in make_cmds.items():
+	compileCmd = ["make"]
+	compileCmd.append(makecmd)
+	compileCmd = ' '.join(compileCmd)
+	print "Running '{}'...".format(compileCmd)
+	compileResult = psUtils.compile(compileCmd)
+	if compileResult:
+		print "** Error using make command: {}! **".format(compileCmd)
+		sys.exit(compileResult)
+	if fileList[0] != 'r':
+		files = fileList[1]
+		createFlag = True
+		if fileList[0] == 'd':
+			createFlag = False
+		for f in files:
+			if os.path.exists(f) != createFlag:
+				print "** {} file '{}' after running {}! **".format("Missing" if createFlag else "Existing", f, compileCmd)
+				sys.exit(1)
+	print "Passed!\n"
+
+print "Compilation seems OK! Check if you got warnings!"
+
+
+sys.exit(0)
