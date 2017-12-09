@@ -20,18 +20,20 @@ void freeStr(void* s);
 
  */
 int strFcn (const void*  s, size_t tableSize);
+
 /**
  * @brief print a string
  *  assuming key pointer to string
  * 
  */
 void strPrint (const void*  s);
+
 /**
  *  strCompare - pointer to int comparison function:
  * @brief compare 2 strings
  *   returns zero int if both strings are equal, otherwise
  *   returns non-zero.
  */
-/* TODO change here */ strCompare (/* TODO change here */);
+int (*strCompare)(const void *, const void *);
 
 #endif // _MY_STR_FUNCTIONS_H_

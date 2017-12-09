@@ -39,7 +39,7 @@
  *   returns non-zero.
  * use void *
  */
-typedef /* TODO change here */
+typedef int(*ComparisonFcn)(const void *, const void *);
 
 
 #endif

@@ -1,5 +1,5 @@
 #include <stdio.h>
-
+#include <stdlib.h>
 void ReadFile(FILE *fIn)
 
 {
@@ -18,8 +18,5 @@ void ReadFile(FILE *fIn)
 
 }
 int main() {
-    FILE *f = fopen("./h.txt","r");
-    if (f == NULL){printf("hithere");}
-    ReadFile(f);
-    return 0;
+    fprintf(stderr, MEM_OUT);
 }
