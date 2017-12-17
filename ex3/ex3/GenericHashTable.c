@@ -7,8 +7,13 @@
 #define TRUE 1
 #define FALSE 0
 #define RESIZE_INCREMENT 2
+#define COMPARE_TRUE 0
 
-typedef struct Table{
+/**
+ * @brief this struct represents a hash table
+ */
+typedef struct Table
+{
     size_t originSize;
     size_t size;
     void **tableKeys;
@@ -19,7 +24,6 @@ typedef struct Table{
     PrintKeyFcn printKey;
     PrintDataFcn printData;
     ComparisonFcn compare;
-
 }Table;
 
 /**
@@ -29,13 +33,11 @@ typedef struct Table{
  * report error MEM_OUT to the standard error and return NULL.
  */
 
-TableP createTable(size_t tableSize, CloneKeyFcn cloneKey, FreeKeyFcn freeKey
-        ,HashFcn hfun,PrintKeyFcn printKeyFun, PrintDataFcn printDataFun
-        , ComparisonFcn fcomp)
+TableP createTable(size_t tableSize, CloneKeyFcn cloneKey, FreeKeyFcn freeKey, HashFcn hfun, PrintKeyFcn printKeyFun, PrintDataFcn printDataFun, ComparisonFcn fcomp)
 {
-    if(cloneKey == NULL || freeKey == NULL || hfun == NULL || printKeyFun == NULL ||
-            printDataFun == NULL || fcomp == NULL)
+    if(cloneKey == NULL || freeKey == NULL || hfun == NULL || printKeyFun == NULL || printDataFun == NULL || fcomp == NULL)
     {
+        reportError(GENERAL_ERROR);
         return NULL;
     }
     TableP newTable = (TableP) malloc(sizeof(Table));
@@ -56,31 +58,56 @@ TableP createTable(size_t tableSize, CloneKeyFcn cloneKey, FreeKeyFcn freeKey
     newTable->tableData = malloc(tableSize * sizeof(DataP));
     if(newTable->tableKeys == NULL || newTable->tableData == NULL)
     {
+        if(newTable->tableKeys != NULL)
+        {
+            free(newTable->tableKeys);
+        }
+        if(newTable->tableData != NULL)
+        {
+            free(newTable->tableData);
+        }
+        free(newTable);
         reportError(MEM_OUT);
         return NULL;
     }
     return newTable;
 }
 
-//todo
+
 /**
- * @brief
- * @param table
- * @param key
- * @param object
- * @return
+ * @brief  updates size if table is full and puts object in the right place.
+ * @param table our table
+ * @param key our key
+ * @param object our given object
+ * @return True if we succeeded False otherwise.
  */
 static int updateSize(const TableP table, const void* key, DataP object)
 {
     assert(table != NULL && key != NULL && object != NULL);
+    void* cloneKey = (table->cloneKey)(key);
+    if(cloneKey == NULL)
+    {
+        reportError(GENERAL_ERROR);
+        return FALSE;
+    }
     DataP *newData = malloc(table->size * RESIZE_INCREMENT * sizeof(DataP));
     void ** newKeys = malloc(table->size * RESIZE_INCREMENT * sizeof(void*));
     if(newData == NULL || newKeys == NULL)
     {
+        if(newData != NULL)
+        {
+            free(newData);
+        }
+        if(newKeys != NULL)
+        {
+            free(newKeys);
+        }
+        free(cloneKey);
         reportError(MEM_OUT);
         return FALSE;
     }
-    for(int i = 0; i < table->size; i++)
+    unsigned int i;
+    for(i = 0; i < table->size; i++)
     {
         newData[RESIZE_INCREMENT * i] = table->tableData[i];
         newKeys[RESIZE_INCREMENT * i] = table->tableKeys[i];
@@ -90,14 +117,10 @@ static int updateSize(const TableP table, const void* key, DataP object)
     free(table->tableData);
     table->tableData = newData;
     table->tableKeys = newKeys;
-    int c = (table->hash)(key, table->size);
+    int c = (table->hash)(key, table->originSize);
     size_t ratio = table->size / table->originSize;
     int index = c * (int) ratio + 1;                //the +1 is so its put in an open odd number spot
-    table->tableKeys[index] = (table->cloneKey)(key);
-    if(table->tableKeys[index] == NULL)
-    {
-        return FALSE;
-    }
+    table->tableKeys[index] = cloneKey;
     table->tableData[index] = object;
     return TRUE;
 }
@@ -115,17 +138,21 @@ int insert(const TableP table, const void* key, DataP object)
 {
     if(table == NULL || key == NULL || object == NULL)
     {
+        reportError(GENERAL_ERROR);
         return FALSE;
     }
-    int i, c = (table->hash)(key, table->size);
+    int i, c = (table->hash)(key, table->originSize);
     size_t ratio = table->size / table->originSize;
     int index = c * (int) ratio, maxIndex = (c + 1) * (int) ratio;
     for(i = index; i < maxIndex; i++)
     {
-        if((table->compare)(table->tableKeys[i], key) == 0)
+        if(table->tableKeys[i] != NULL)
         {
-            table->tableData = object;
-            return TRUE;
+            if((table->compare)(table->tableKeys[i], key) == COMPARE_TRUE)
+            {
+                table->tableData[index] = object;
+                return TRUE;
+            }
         }
     }
     for(i = index; i < maxIndex; i++)
@@ -133,7 +160,7 @@ int insert(const TableP table, const void* key, DataP object)
         if(table->tableKeys[i] == NULL)
         {
             table->tableKeys[i] = (table->cloneKey)(key);
-            if(table->tableKeys[i] == NULL)
+            if(table->tableKeys[i] == NULL)     //we had an issue with cloning an error occured
             {
                 return FALSE;
             }
@@ -152,18 +179,26 @@ int insert(const TableP table, const void* key, DataP object)
  */
 DataP removeData(TableP table, const void* key)
 {
-    assert(table != NULL && key != NULL);
-    for(int i = 0; i < table->size; i++)
+    if(table == NULL || key == NULL)
     {
-        if(!(table->compare)(table->tableKeys[i], key))
+        reportError(GENERAL_ERROR);
+        return NULL;
+    }
+    unsigned int i;
+    for(i = 0; i < table->size; i++)
+    {
+        if(table->tableKeys[i] != NULL)
         {
-            (table->freeKey)(table->tableKeys[i]);
-            DataP temp = table->tableData[i];
-            table->tableData[i] = NULL;
-            return temp;
+            if ((table->compare)(table->tableKeys[i], key) == COMPARE_TRUE)
+            {
+                (table->freeKey)(table->tableKeys[i]);
+                DataP temp = table->tableData[i];
+                table->tableData[i] = NULL;
+                return temp;
+            }
         }
     }
-//todo get ansewr about weather or not to free data
+    return NULL;
 }
 
 
@@ -177,13 +212,21 @@ DataP removeData(TableP table, const void* key)
  */
 DataP findData(const TableP table, const void* key, int* arrCell)
 {
-    assert(table != NULL && key != NULL && arrCell != NULL);
-    for(int i = 0; i < table->size; i++)
+    if(table == NULL || key == NULL || arrCell == NULL)
     {
-        if(!(table->compare)(table->tableKeys[i], key))
+        reportError(GENERAL_ERROR);
+        return NULL;
+    }
+    unsigned int i;
+    for(i = 0; i < table->size; i++)
+    {
+        if(table->tableKeys[i] != NULL)
         {
-            *arrCell = i;
-            return table->tableData[i];
+            if((table->compare)(table->tableKeys[i], key) == COMPARE_TRUE)
+            {
+                *arrCell = i;
+                return table->tableData[i];
+            }
         }
     }
     *arrCell = -1;
@@ -200,9 +243,9 @@ DataP findData(const TableP table, const void* key, int* arrCell)
  */
 DataP getDataAt(const TableP table, int arrCell)
 {
-    assert(table != NULL);
-    if(!(arrCell >= 0 && arrCell <= table->size))
+    if(table == NULL || !(arrCell >= 0 && arrCell < (int) (table->size)))
     {
+        reportError(GENERAL_ERROR);
         return NULL;
     }
     return table->tableData[arrCell];
@@ -215,9 +258,9 @@ DataP getDataAt(const TableP table, int arrCell)
  */
 ConstKeyP getKeyAt(const TableP table, int arrCell)
 {
-    assert(table != NULL);
-    if(!(arrCell >= 0 && arrCell <= table->size))
+    if(table == NULL || !(arrCell >= 0 && arrCell < (int) (table->size)))
     {
+        reportError(GENERAL_ERROR);
         return NULL;
     }
     return table->tableKeys[arrCell];
@@ -228,20 +271,23 @@ ConstKeyP getKeyAt(const TableP table, int arrCell)
  */
 void printTable(const TableP table)
 {
-    //TODO check if it meets requirments
     if(table == NULL)
     {
+        reportError(GENERAL_ERROR);
         return;
     }
-    for(int i = 0; i < table->size; i++) {
-        printf("[%d]", i);
+    unsigned int i;
+    for(i = 0; i < table->size; i++)
+    {
+        printf("[%d]\t", i);
         if(table->tableKeys[i] != NULL)
         {
             (table->printKey)(table->tableKeys[i]);
             printf(",");
             (table->printData)(table->tableData[i]);
+            printf("\t");
         }
-    printf("\t\n");
+        printf("\n");
     }
 }
 
@@ -252,19 +298,27 @@ void printTable(const TableP table)
  */
 void freeTable(TableP table)
 {
-//TODO see if free is needed to check null or if it was freed before
     if(table == NULL)
     {
+        reportError(GENERAL_ERROR);
         return;
     }
-    for(int i = 0; i < table->size; i++)
+    unsigned int i;
+    for(i = 0; i < table->size; i++)
     {
-        (*(table->freeKey))(table->tableKeys[i]);
-        //todo fix next line
-        //free(table->tableData[i]);
+        if(table->tableKeys[i] != NULL)
+        {
+            (table->freeKey)(table->tableKeys[i]);
+        }
     }
-    free(table->tableData);
-    free(table->tableKeys);
+    if(table->tableData != NULL)
+    {
+        free(table->tableData);
+    }
+    if(table->tableKeys != NULL)
+    {
+        free(table->tableKeys);
+    }
     free(table);
 }
 

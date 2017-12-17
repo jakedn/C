@@ -2,13 +2,14 @@
 #include <stdlib.h>
 #include <string.h>
 #include "TableErrorHandle.h"
+#include "MyStringFunctions.h"
 #include <assert.h>
 
 #define EQUAL 0
 #define NEQUAL 1
-#define ERROR_CODE (-1)
+#define ERROR_CODE (-99)
 
-//TODO asserts in all functionss
+
 /**
  * @brief clone a string
  */
@@ -17,16 +18,21 @@ void* cloneStr(const void*  s)
     assert(s != NULL);
     char *temp = (char *) s;
     size_t length = strlen(temp);
-    assert(length > 0);
+    if(length <= 0)
+    {
+        return NULL;
+    }
+    // we add one to length to allocate for the null char
     void *news = malloc((length + 1) * sizeof(char));
     if(news == NULL)
     {
         reportError(MEM_OUT);
         return NULL;
     }
-    for(size_t i = 0; i < (length + 1) * sizeof(char); i++)
+    size_t i;
+    for(i = 0; i < (length + 1); i++)
     {
-        news[i] = s[i];
+        ((char*) news)[i] = ((char*) s)[i];
     }
     return news;
 }
@@ -36,6 +42,7 @@ void* cloneStr(const void*  s)
  */
 void freeStr(void* s)
 {
+    assert(s != NULL);
     free(s);
 }
 
@@ -48,18 +55,17 @@ void freeStr(void* s)
  */
 int strFcn (const void*  s, size_t tableSize)
 {
-    if(s == NULL || tableSize <= 0)
-    {
-        return ERROR_CODE;
-    }
+    assert(s != NULL && tableSize > 0);
     char *temp = (char *) s;
     int sum = 0, size = (int) tableSize;
     size_t length = strlen(temp);
     if(length == 0)
     {
+        reportError(GENERAL_ERROR);
         return ERROR_CODE;
     }
-    for(int i = 0; i < length; i++)
+    size_t i;
+    for(i = 0; i < length; i++)
     {
         sum += temp[i];
     }
@@ -73,6 +79,7 @@ int strFcn (const void*  s, size_t tableSize)
  */
 void strPrint (const void*  s)
 {
+    assert(s != NULL);
     char *temp = (char *) s;
     printf("%s", temp);
 }

@@ -1,9 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
-#include "TableErrorHandle.c"
+#include "TableErrorHandle.h"
+#include "MyIntFunctions.h"
 
-#define ERROR_CODE (-1)
+#define ERROR_CODE (-99)
 
 /**
  * @brief clone an int
@@ -24,7 +25,7 @@ void* cloneInt(const void* i)
 /**
  * @brief free an int
  */
-void freeInt( void* i)
+void freeInt(void* i)
 {
     assert(i != NULL);
     free(i);
@@ -48,10 +49,12 @@ int intFcn (const void* key, size_t tableSize)
  *  assuming key pointer to an int
  *
  */
-void intPrint (const void* key){
-    assert(key == NULL);
+void intPrint (const void* key)
+{
+    assert(key != NULL);
     printf("%d", *(int*) key);
 }
+
 /**
  *  intCompare - pointer to int comparison function:
  * @brief compare 2 ints
@@ -59,7 +62,8 @@ void intPrint (const void* key){
  *   returns non-zero.
  *
  */
-int intCompare (void *key1, void *key2){
+int intCompare (const void *key1, const void *key2)
+{
     assert(key1 != NULL && key2 != NULL);
     int *val1 = (int*) key1, *val2 = (int*) key2;
     return *val1 - *val2;

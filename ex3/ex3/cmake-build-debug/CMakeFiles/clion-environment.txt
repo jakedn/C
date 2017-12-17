@@ -1,4 +1,2 @@
-ToolSet: 2.9.0@C:\cygwin64
 Options: 
-
-Options:
+CMake: 3.8.2@/usr/local/jetbrains/clion-2017.2.2/bin/cmake/bin/cmake

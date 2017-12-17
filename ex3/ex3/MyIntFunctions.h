@@ -17,7 +17,6 @@ void freeInt( void* i);
  * @brief hash value of key for HashTable with size tableSize
  *  assuming key pointer to an int
  * @return number between 0-(tableSize-1)
-
  */
 int intFcn (const void* key, size_t tableSize);
 /**
@@ -33,6 +32,6 @@ void intPrint (const void* key);
  *   returns non-zero.
  * 
  */
-/* TODO change here */ intCompare (/* TODO change here */);
+int intCompare (const void *, const void *);
 
 #endif // _MY_INT_FUNCTIONS_H_

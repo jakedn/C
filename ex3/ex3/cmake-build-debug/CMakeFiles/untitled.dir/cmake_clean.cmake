@@ -3,9 +3,11 @@ file(REMOVE_RECURSE
   "CMakeFiles/untitled.dir/MyIntFunctions.c.o"
   "CMakeFiles/untitled.dir/MyStringFunctions.c.o"
   "CMakeFiles/untitled.dir/GenericHashTable.c.o"
+  "CMakeFiles/untitled.dir/HashIntSearch.c.o"
+  "CMakeFiles/untitled.dir/HashStrSearch.c.o"
+  "CMakeFiles/untitled.dir/TableErrorHandle.c.o"
   "untitled.pdb"
-  "untitled.exe"
-  "libuntitled.dll.a"
+  "untitled"
 )
 
 # Per-language clean rules from dependency scanning.

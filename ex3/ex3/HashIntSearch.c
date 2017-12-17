@@ -7,7 +7,7 @@
 #define MAXIMAL_VAL 15
 #define DATA_SIZE (MAXIMAL_VAL - MINIMAL_VAL +1)
 /**
-* main
+* main here
 */
 int main(int argc, char *argv[]) 
 {
@@ -60,7 +60,7 @@ int main(int argc, char *argv[])
     // (5) look for the key
     
     int arrCell;
-    int listNode;
+
     
     int *res=findData(table, &val, &arrCell);
     printf("%d=%d\t%d\t\n", *res,val, arrCell);
