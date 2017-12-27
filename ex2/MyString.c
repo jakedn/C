@@ -71,6 +71,11 @@ MyStringP createStringFromString(const MyStringP str1)
  */
 void freeString(MyStringP str1)
 {
+    //TODO updated
+    if(str1 == NULL)
+    {
+        return;
+    }
     if(str1->str != NULL)
     {
         free(str1->str);
@@ -277,7 +282,8 @@ MyStringP deleteCharString(MyStringP str1, const char letter)
         if(*p == letter)
         {
             char *temp = p;
-            while(temp != '\0')
+            //TODO added fix *
+            while(*temp != '\0')
             {
                 *temp = *(temp + 1);
                 temp++;
